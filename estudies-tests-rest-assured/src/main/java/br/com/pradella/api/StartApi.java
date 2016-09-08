@@ -1,19 +1,40 @@
 package br.com.pradella.api;
 
-import static spark.Spark.*;
+import static spark.Spark.post;
 
-
-
+import com.google.gson.Gson;
 
 import br.com.pradella.JsonTransformer;
-import groovy.lang.Singleton;
+import br.com.pradella.domain.Perfil;
+import spark.Request;
 
 public class StartApi {
 
 	public static void main(String[] args) {
-		get("/", (req, rsp) -> {
+	
+		post("/", (req, rsp) -> {
 			rsp.type("application/json");
-			return "retorno OK";
+			rsp.status(202);
+
+			Perfil perfil = perfil(req);
+			return perfil;
 		}, new JsonTransformer());
+	
+	
+	
 	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	private static Perfil perfil(Request req) {
+		return new Gson().fromJson(req.body(), Perfil.class);
+	}
+
 }
